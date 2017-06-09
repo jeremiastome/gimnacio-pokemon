@@ -10,3 +10,4 @@ case object Roca extends Tipo(Agua)
 case object Pelea extends Tipo(Psiquico)
 case object Fantasma extends Tipo
 case object Psiquico extends Tipo(Fantasma)
+case object Volador extends Tipo(Electrico)
