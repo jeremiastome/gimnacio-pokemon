@@ -1,6 +1,7 @@
 package test
 
 import model._
+import model.Actividades._
 import org.scalatest.{BeforeAndAfter, FlatSpec}
 
 class RutinaTest extends FlatSpec with BeforeAndAfter {
@@ -10,7 +11,7 @@ class RutinaTest extends FlatSpec with BeforeAndAfter {
 
   "Un pokemon con 1 de experiencia despues realizar una rutina con solo la actividad de levantar pesas de 10 kilos" should
     "tener su experiencia en 11"  in {
- //   var res = gimnacio.realizarRutina(pokemon, List(new LevantarPesas(10)))
-  //  assert(res.experiencia == 11)
+      var res = gimnacio.realizarRutina(pokemon, List(LevantarPesas(10)))
+      assert(res.experiencia == 11)
   }
 }

@@ -13,6 +13,10 @@ case class Pokemon(val energia: Int,
     copy(energia = energiaMaxima)
   }
 
+  def nuevoEstado(nuevoEstado : Estado) = {
+    copy(estado = nuevoEstado)
+  }
+
   def perderEnergia(cant: Int) = {
     copy(energia = energia - cant)
   }
