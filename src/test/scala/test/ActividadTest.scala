@@ -5,7 +5,7 @@ import model._
 import org.scalatest.{BeforeAndAfter, FlatSpec}
 
 class ActividadTest extends FlatSpec with BeforeAndAfter{
-  var especie = new Especie(Agua, Psiquico, 100)
+  var especie = new Especie(Agua, 100)
   var pokemon = new Pokemon(30, 100, 2, 5, especie)
   var gimnacio = new Gimnacio()
 
@@ -22,14 +22,14 @@ class ActividadTest extends FlatSpec with BeforeAndAfter{
   }
 
   "Un pokemon tipo pelea con 1 de experiencia despues de levantar pesas de 2 kilos" should "tener su experiencia en 5" in {
-    var pokemon1 = new Pokemon(30, 100, 4, 5, new Especie(Pelea, Agua, 100))
+    var pokemon1 = new Pokemon(30, 100, 4, 5, new Especie(Agua, 100, Some(Pelea)))
     var res = gimnacio.realizarActividad(pokemon1, LevantarPesas(2))
     assert(res.experiencia == 5)
   }
 
   "Un pokemon tipo fantasma" should "no puede levantar pesas" in {
     assertThrows[NoPodesLevantarPesasException] {
-      var pokemon2 = new Pokemon(30, 100, 4, 5, new Especie(Fantasma, Psiquico, 100))
+      var pokemon2 = new Pokemon(30, 100, 4, 5, new Especie(Fantasma, 100))
       var res = gimnacio.realizarActividad(pokemon2, LevantarPesas(2))
     }
   }
@@ -49,7 +49,7 @@ class ActividadTest extends FlatSpec with BeforeAndAfter{
 
   "Un pokemon tipo agua con 70 de energia, 1 de experiencia y 5 de velocidad despues de nadar una hora" should
     "tener su energia en 10, su experiencia en 12001 y su velocidad en 6" in {
-    var pokemon3 = new Pokemon(70, 100, 4, 5, new Especie(Agua, Psiquico, 100))
+    var pokemon3 = new Pokemon(70, 100, 4, 5, new Especie(Psiquico, 100, Some(Agua)))
     var res = gimnacio.realizarActividad(pokemon3, Nadar(60))
     assert(res.energia == 10)
     assert(res.experiencia == 12001)

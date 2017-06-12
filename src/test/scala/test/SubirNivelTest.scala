@@ -4,7 +4,7 @@ import model._
 import org.scalatest.{BeforeAndAfter, FlatSpec}
 
 class SubirNivelTest extends FlatSpec with BeforeAndAfter {
-  var especie = new Especie(Agua, Psiquico, 20)
+  var especie = new Especie(Agua, 20)
   var pokemon = new Pokemon(30, 100, 2, 5, especie)
   var gimnacio = new Gimnacio()
 /*
