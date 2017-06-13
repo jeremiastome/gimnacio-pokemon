@@ -1,12 +1,14 @@
 package model
 
+import model.Estados._
+
 object Actividades{
 
-  type Actividad = Int => Pokemon => Pokemon
+  type Actividad = Pokemon => Pokemon
 
   val Descansar : Pokemon => Pokemon = pokemon => pokemon.descansar()
 
-  val LevantarPesas : Actividad = cant => pokemon => {
+  val LevantarPesas : Int => Actividad = cant => pokemon => {
     val esp = pokemon.especie
     (esp.tipoPrincipal, esp.tipoSecundario , cant) match {
       case (_, _, kilos) if (kilos > 10 * pokemon.fuerza) => pokemon.perderEnergia(10).nuevoEstado(Paralizado)
@@ -18,7 +20,7 @@ object Actividades{
     }
   }
 
-  val Nadar : Actividad = cant => pokemon => {
+  val Nadar : Int => Actividad = cant => pokemon => {
     val esp = pokemon.especie
     (esp.tipoPrincipal, esp.tipoSecundario) match {
       case (Agua, _) => pokemon.perderEnergia(cant).ganarExperiencia(200*cant).ganarVelocidad(cant/60)

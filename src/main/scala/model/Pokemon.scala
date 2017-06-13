@@ -1,5 +1,7 @@
 package model
 
+import model.Estados._
+
 case class Pokemon(val energia: Int,
               val energiaMaxima: Int,
               val fuerza: Int,
