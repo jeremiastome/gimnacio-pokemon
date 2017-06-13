@@ -7,7 +7,11 @@ abstract class Estado() {
 
 case object Despierto extends Estado{
   def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon ={
-    actividad (pokemon)
+      (actividad) match {
+        case (Nadar) if (pokemon.especie.debilidades.contains(Agua)) => pokemon.nuevoEstado(KO)
+        case (Descansar) if pokemon.cansado => actividad(pokemon).nuevoEstado(new Dormido())
+        case (_) => actividad(pokemon)
+      }
     }
 }
 
@@ -23,11 +27,10 @@ case object Paralizado extends Estado{
 case class Dormido(var turnos : Int = 3) extends Estado{
   def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon ={
     if(turnos > 0){
-      turnos -= 1
-      pokemon
+      pokemon.copy(estado = new Dormido(turnos - 1))
     }
     else {
-      actividad(pokemon).nuevoEstado(Despierto)
+      actividad(pokemon.nuevoEstado(Despierto))
     }
   }
 }

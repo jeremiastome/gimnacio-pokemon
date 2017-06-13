@@ -31,5 +31,9 @@ case class Pokemon(val energia: Int,
   def ganarVelocidad(cant: Int) = {
     copy(velocidad = velocidad + cant)
   }
+
+  def cansado() :Boolean = {
+    energia < energiaMaxima/2
+  }
 }
 

@@ -9,7 +9,7 @@ object Actividades{
   val LevantarPesas : Actividad = cant => pokemon => {
     val esp = pokemon.especie
     (esp.tipoPrincipal, esp.tipoSecundario , cant) match {
-      case (_, _, kilos) if (kilos > 10 * pokemon.fuerza) => pokemon.perderEnergia(10)
+      case (_, _, kilos) if (kilos > 10 * pokemon.fuerza) => pokemon.perderEnergia(10).nuevoEstado(Paralizado)
       case (Fantasma, _, _) => throw new NoPodesLevantarPesasException("El tipo fantasma no puede levantar pesas")
       case (_, Some(Fantasma), _) => throw new NoPodesLevantarPesasException("El tipo fantasma no puede levantar pesas")
       case (Pelea, _, _) => pokemon.ganarExperiencia(cant * 2)
