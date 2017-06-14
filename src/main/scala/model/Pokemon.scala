@@ -1,18 +1,17 @@
 package model
 
-import model.Estados._
-
 case class Pokemon(val energia: Int,
-              val energiaMaxima: Int,
               val fuerza: Int,
               val velocidad: Int,
               val especie: Especie,
               val experiencia: Int = 1,
               val nivel: Int = 1,
               val estado: Estado = Despierto){
+  def this(especie:Especie) = this(especie.caracteristicas.energiaMaxima,especie.caracteristicas.fuerza,
+                                   especie.caracteristicas.velocidad, especie)
 
   def descansar() = {
-    copy(energia = energiaMaxima)
+    copy(energia = especie.caracteristicas.energiaMaxima)
   }
 
   def nuevoEstado(nuevoEstado : Estado) = {
@@ -20,7 +19,10 @@ case class Pokemon(val energia: Int,
   }
 
   def perderEnergia(cant: Int) = {
-    copy(energia = energia - cant)
+    if (cant >= energia ){
+      copy(energia = energia - cant)
+    }
+    else throw new SinEnergiaException("No tenes suficiente energia")
   }
 
   def ganarExperiencia(cant: Int) = {
@@ -35,7 +37,13 @@ case class Pokemon(val energia: Int,
   }
 
   def cansado() :Boolean = {
-    energia < energiaMaxima/2
+    energia < especie.caracteristicas.energiaMaxima/2
+  }
+
+  def evolucionar() = {
+    val evolucion = especie.evolucion.get
+    copy(energia = evolucion.caracteristicas.energiaMaxima, fuerza = evolucion.caracteristicas.fuerza,
+      velocidad = evolucion.caracteristicas.velocidad, especie = evolucion)
   }
 }
 

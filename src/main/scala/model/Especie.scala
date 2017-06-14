@@ -2,7 +2,10 @@ package model
 
 class Especie(val tipoPrincipal: Tipo,
               val resistenciaEvolutiva: Int,
+              val caracteristicas: Caracteriasticas,
               val tipoSecundario: Option[Tipo] = None,
+              val evolucion: Option[Especie] = None,
+              val condicion: Option[Condicion] = None,
               var experienciaProximoNivel: Int = 0) {
 
   def debilidades(): List[Tipo] ={
@@ -20,3 +23,8 @@ class Especie(val tipoPrincipal: Tipo,
     experienciaProximoNivel = 2 * experienciaProximoNivel
   }
 }
+
+class Caracteriasticas(val energia: Int,
+                       val energiaMaxima: Int,
+                       val fuerza: Int,
+                       val velocidad: Int)

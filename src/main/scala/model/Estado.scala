@@ -1,37 +1,41 @@
 package model
 import model.Actividades._
 
-object Estados {
+abstract class Estado() {
+  def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon
+}
 
-  type Estado = Pokemon => Actividad => Pokemon
-
-  val Descansar: Pokemon => Pokemon = pokemon => pokemon.descansar()
-
-  val Despierto : Estado = pokemon => actividad => {
+case object Despierto extends Estado{
+  def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon ={
     (actividad) match {
       case (Nadar) if (pokemon.especie.debilidades.contains(Agua)) => pokemon.nuevoEstado(KO)
-      case (Descansar) if pokemon.cansado => actividad(pokemon).nuevoEstado(Dormido(3))
+      case (Descansar) if pokemon.cansado => actividad(pokemon).nuevoEstado(new Dormido())
       case (_) => actividad(pokemon)
     }
   }
+}
 
-  val Paralizado : Estado = pokemon => actividad => {
+case object Paralizado extends Estado{
+  def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon ={
     actividad match {
       case (Descansar) => actividad(pokemon)
       case (_)         => pokemon.nuevoEstado(KO)
     }
   }
+}
 
-  val Dormido : Int => Estado = turnos => pokemon => actividad => {
-    if(turnos > 0){
-      pokemon.copy(estado = Dormido(turnos - 1))
+case class Dormido(var turnos : Int = 3) extends Estado{
+  def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon ={
+    if(turnos > 1){
+      pokemon.copy(estado = new Dormido(turnos - 1))
     }
     else {
-      actividad(pokemon.nuevoEstado(Despierto))
+      pokemon.nuevoEstado(Despierto)
     }
   }
-
-  val KO : Estado = pokemon => actividad => {
+}
+case object KO extends Estado{
+  def realizarActividad(pokemon: Pokemon, actividad : (Pokemon => Pokemon)): Pokemon = {
     throw new EstadoKOException("No podes hacer nada, estas inconsciente")
   }
 }

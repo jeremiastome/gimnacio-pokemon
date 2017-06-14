@@ -1,7 +1,5 @@
 package model
 
-import model.Estados._
-
 object Actividades{
 
   type Actividad = Pokemon => Pokemon
@@ -25,7 +23,9 @@ object Actividades{
     (esp.tipoPrincipal, esp.tipoSecundario) match {
       case (Agua, _) => pokemon.perderEnergia(cant).ganarExperiencia(200*cant).ganarVelocidad(cant/60)
       case (_, Some(Agua)) => pokemon.perderEnergia(cant).ganarExperiencia(200*cant).ganarVelocidad(cant/60)
-      case(_, _) => pokemon.perderEnergia(cant).ganarExperiencia(200*cant)
+      case(_, _) => if (pokemon.especie.debilidades.contains(Agua)) {
+                          pokemon.nuevoEstado(KO)
+                    } else pokemon.perderEnergia(cant).ganarExperiencia(200*cant)
     }
   }
 }
